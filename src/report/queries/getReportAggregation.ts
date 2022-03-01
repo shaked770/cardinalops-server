@@ -18,7 +18,11 @@ export default (options: {
         {
           $match: {
             $expr: {
-              $eq: ['$rules', '$$ruleId'],
+              $and: [
+                {
+                  $eq: ['$rules', '$$ruleId'],
+                },
+              ],
             },
           },
         },
@@ -44,6 +48,7 @@ export default (options: {
               options && options.timeBuckets
                 ? options.timeBuckets.map((bucket) => bucket.getTime())
                 : [options.fromDate.getTime(), options.toDate.getTime()], // Should throw if buckets does not exists and no from and to are present.
+            default: 'out',
             output: {
               tp: {
                 $sum: {
@@ -104,6 +109,15 @@ export default (options: {
       resolutions: {
         $push: '$tickets.resolutions',
       },
+    },
+  },
+  {
+    $project: {
+      id: '$_id.id',
+      name: '$_id.name',
+      numTickets: 1,
+      resolutions: 1,
+      _id: 0,
     },
   },
 ];
