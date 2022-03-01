@@ -14,7 +14,7 @@ export class ReportRepository {
   private get ruleCollection(): Collection<Rule> {
     return this.client
       .db(this.configService.get('DB'))
-      .collection<Rule>(this.configService.get('TICKETS_COLLECTION'));
+      .collection<Rule>(this.configService.get('RULES_COLLECTION'));
   }
 
   getReport(
